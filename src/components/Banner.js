@@ -1,6 +1,6 @@
 const Banner = ({ title }) => {
     return (
-         <h1>{title}</h1>
+         <h1 style={{padding: 3}}>{title}</h1>
          )
 }
 
