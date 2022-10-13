@@ -5,3 +5,11 @@
 .my-card {
     height: 220px;
 }
+
+.conflicted {
+    background-color: lightgray;
+}
+
+.conflicted .card-footer {
+    background-color: lightgray !important
+}
