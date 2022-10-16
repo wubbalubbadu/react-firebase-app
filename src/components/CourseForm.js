@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDbUpdate } from '../utilities/firebase';
 import { useFormData } from '../utilities/useFormData';
 
-const validateUserData = (key, val) => {
+const validateData = (key, val) => {
     switch (key) {
         case 'title':
             return /(^\w\w)/.test(val) ? '' : 'must be least two characters';
@@ -34,14 +34,17 @@ const ButtonBar = ({ message, disabled }) => {
 
 const CourseForm = ({ courses }) => {
     const { id } = useParams();
-      const [update, result] = useDbUpdate(`/course/${id}`);
-    const [state, change] = useFormData(validateUserData, courses[id]);
-    console.log(state, change)
+    const [update, result] = useDbUpdate(`/courses/${id}`);
+    const [state, change] = useFormData(validateData, courses[id]);
+    const navigate = useNavigate();
+    
     const submit = (evt) => {
         evt.preventDefault();
         if (!state.errors) {
           update(state.values);
+          navigate(-1);
         }
+        
     };
 
     return (
@@ -52,7 +55,5 @@ const CourseForm = ({ courses }) => {
         </form>
     )
 };
-
-
 
 export default CourseForm;
