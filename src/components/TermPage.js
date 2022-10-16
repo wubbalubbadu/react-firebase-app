@@ -3,7 +3,7 @@ import TermSelector from "./TermSelector";
 import CourseList from "./CourseList";
 import Modal from './Modal';
 import SelectedCourses from "./SelectedCourses";
-import { catchConflicts } from './checkValidTime';
+import { catchConflicts } from '../utilities/checkValidTime';
 
 const TermPage = ({ courses }) => {
   const [selection, setSelection] = useState("Fall");
@@ -23,8 +23,6 @@ const TermPage = ({ courses }) => {
       );
 
       const newConflicts = catchConflicts(courses, item);
-      console.log(conflicts)
-      console.log(newConflicts)
       setConflicts(
         selected.includes(item)
           ? conflicts.filter(x => !newConflicts.includes(x))
