@@ -1,55 +1,50 @@
-// import { useEffect, useState } from 'react';
-// import { getDatabase, onValue, ref, update} from 'firebase/database';
+import { useCallback, useEffect, useState } from 'react';
+import { initializeApp } from "firebase/app";
+import { getDatabase, onValue, ref, update } from 'firebase/database';
 
+const firebaseConfig = {
+    apiKey: "AIzaSyDubBAukJO2U88l6O-mUXvT8_5F5erjYVE",
+    authDomain: "scheduler-react-firebase-f179f.firebaseapp.com",
+    databaseURL: "https://scheduler-react-firebase-f179f-default-rtdb.firebaseio.com",
+    projectId: "scheduler-react-firebase-f179f",
+    storageBucket: "scheduler-react-firebase-f179f.appspot.com",
+    messagingSenderId: "1000376041001",
+    appId: "1:1000376041001:web:6ab57a5a49c40116c0e638",
+    measurementId: "G-YF286BQJ9E"
+  };
 
-// const database = getDatabase(firebase);
+// Initialize Firebase
+const firebase = initializeApp(firebaseConfig);
+const database = getDatabase(firebase);
 
-// import { useCallback, useEffect, useState } from 'react';
-// import { initializeApp } from "firebase/app";
-// import { getDatabase, onValue, ref, update } from 'firebase/database';
+export const useDbData = (path) => {
+  const [data, setData] = useState();
+  const [error, setError] = useState(null);
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCqy8l97tEWjvW3V1B0f9bMsMLFk9D4sWk",
-//   authDomain: "maxtactoe.firebaseapp.com",
-//   databaseURL: "https://maxtactoe.firebaseio.com",
-//   projectId: "maxtactoe",
-//   storageBucket: "maxtactoe.appspot.com",
-//   messagingSenderId: "672040841619",
-//   appId: "1:672040841619:web:e488e188d5b93db7753866"
-// };
+  useEffect(() => (
+    onValue(ref(database, path), (snapshot) => {
+     setData( snapshot.val() );
+    }, (error) => {
+      setError(error);
+    })
+  ), [ path ]);
 
-// // Initialize Firebase
-// const firebase = initializeApp(firebaseConfig);
-// const database = getDatabase(firebase);
+  return [ data, error ];
+};
 
-// export const useDbData = (path) => {
-//   const [data, setData] = useState();
-//   const [error, setError] = useState(null);
+const makeResult = (error) => {
+  const timestamp = Date.now();
+  const message = error?.message || `Updated: ${new Date(timestamp).toLocaleString()}`;
+  return { timestamp, error, message };
+};
 
-//   useEffect(() => (
-//     onValue(ref(database, path), (snapshot) => {
-//      setData( snapshot.val() );
-//     }, (error) => {
-//       setError(error);
-//     })
-//   ), [ path ]);
+export const useDbUpdate = (path) => {
+  const [result, setResult] = useState();
+  const updateData = useCallback((value) => {
+    update(ref(database, path), value)
+    .then(() => setResult(makeResult()))
+    .catch((error) => setResult(makeResult(error)))
+  }, [database, path]);
 
-//   return [ data, error ];
-// };
-
-// const makeResult = (error) => {
-//   const timestamp = Date.now();
-//   const message = error?.message || `Updated: ${new Date(timestamp).toLocaleString()}`;
-//   return { timestamp, error, message };
-// };
-
-// export const useDbUpdate = (path) => {
-//   const [result, setResult] = useState();
-//   const updateData = useCallback((value) => {
-//     update(ref(database, path), value)
-//     .then(() => setResult(makeResult()))
-//     .catch((error) => setResult(makeResult(error)))
-//   }, [database, path]);
-
-//   return [updateData, result];
-// };
+  return [updateData, result];
+};
