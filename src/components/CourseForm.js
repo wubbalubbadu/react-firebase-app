@@ -3,14 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useFormData } from '../utilities/useFormData';
 
 const validateUserData = (key, val) => {
-    // switch (key) {
-    //     case 'title':
-    //         return /(^\w\w)/.test(val) ? '' : 'must be least two characters';
-    //     case 'meets':
-    //         return /^\w+@\w+[.]\w+/.test(val) ? '' : 'must contain name@domain.top-level-domain';
-    //     default: return '';
-    // }
-    return '';
+    switch (key) {
+        case 'title':
+            return /(^\w\w)/.test(val) ? '' : 'must be least two characters';
+        case 'meets':
+            return /^$|([M|Tu|W|Th|F]?[M|Tu|W|Th|F]?[M|Tu|W|Th|F] ([0-9]|[0-9][0-9]):[0-9][0-9]-([0-9]|[0-9][0-9]):[0-9][0-9])/g.test(val) ? '' : 'must contain days and start-end, e.g., MWF 12:00-13:20';
+        default: return '';
+    }
 };
 
 const InputField = ({ name, text, state, change }) => (
@@ -36,7 +35,7 @@ const ButtonBar = ({ message, disabled }) => {
 const CourseForm = ({ courses }) => {
     const { id } = useParams();
     //   const [update, result] = useDbUpdate(`/course/${id}`);
-    const [state, change] = useFormData(null, courses[id]);
+    const [state, change] = useFormData(validateUserData, courses[id]);
     console.log(state, change)
     const submit = (evt) => {
         evt.preventDefault();
