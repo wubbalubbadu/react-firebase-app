@@ -4,6 +4,8 @@ import CourseList from "./CourseList";
 import Modal from './Modal';
 import SelectedCourses from "./SelectedCourses";
 import { catchConflicts } from '../utilities/checkValidTime';
+import AuthButton from "./AuthButton";
+import './TermPage.css';
 
 const TermPage = ({ courses }) => {
   const [selection, setSelection] = useState("Fall");
@@ -33,8 +35,14 @@ const TermPage = ({ courses }) => {
 
   return (
     <div>
-      <TermSelector selection={selection} setSelection={setSelection} />
-      <button className="ms-auto btn btn-dark float-end" onClick={openModal}>Check Out</button>
+      <div className="nav-buttons">
+        <TermSelector selection={selection} setSelection={setSelection} />
+        <div className="sign-in-check-out">
+          <button className="ms-auto btn btn-dark" onClick={openModal}>Check Out</button>
+          <AuthButton />
+        </div>
+      </div>
+      
       <Modal open={open} close={closeModal}>
         <SelectedCourses selected={selected} courses={courses} />
       </Modal>

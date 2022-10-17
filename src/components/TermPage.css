@@ -1,0 +1,8 @@
+.nav-buttons {
+    display: inline-flex;
+}
+
+.sign-in-check-out {
+    position: absolute;
+    right: 90px;
+}
