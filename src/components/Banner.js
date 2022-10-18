@@ -1,11 +1,8 @@
-import { useAuthState } from "../utilities/firebase";
-
-const Banner = ({ title }) => {
-    const [user] = useAuthState();
+const Banner = ({ title, profile }) => {
     return (
         <div>
             <h1 style={{padding: 3}}>{title}</h1>
-            {user ? <h5>Welcome, {user.displayName}</h5> : <h5>hi, guest</h5>}
+            {profile.user ? <h5>Welcome, {profile.user.displayName}</h5> : <h5>Welcome, guest</h5>}
         </div>
          )
 }

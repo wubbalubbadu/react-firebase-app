@@ -7,7 +7,7 @@ import { catchConflicts } from '../utilities/checkValidTime';
 import AuthButton from "./AuthButton";
 import './TermPage.css';
 
-const TermPage = ({ courses }) => {
+const TermPage = ({ courses, profile }) => {
   const [selection, setSelection] = useState("Fall");
   const [selected, setSelected] = useState([]);
   const [conflicts, setConflicts] = useState([]);
@@ -46,7 +46,7 @@ const TermPage = ({ courses }) => {
       <Modal open={open} close={closeModal}>
         <SelectedCourses selected={selected} courses={courses} />
       </Modal>
-      <CourseList courses={courses} selection={selection} selected={selected} toggleSelected={toggleSelected} conflicts={conflicts} />
+      <CourseList courses={courses} selection={selection} selected={selected} toggleSelected={toggleSelected} conflicts={conflicts} profile={profile}/>
     </div>
   )
 
