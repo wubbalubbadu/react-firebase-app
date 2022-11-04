@@ -44,7 +44,7 @@ if (process.env.REACT_APP_EMULATE === "true") {
   signInWithCredential(
     testAuth,
     GoogleAuthProvider.credential(
-      '{"sub": "M1nKdqHLqL8mdVKO25NsOEMenYZG", "email": "test@gmail.com", "displayName":"Test User", "email_verified": true}'
+      '{"sub": "Zp3xoTfDOem03EBDHu25XbhB6F8I", "email": "test@gmail.com", "displayName":"Test User", "email_verified": true}'
     )
   );
 }
