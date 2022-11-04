@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { initializeApp } from "firebase/app";
-import { getDatabase, onValue, ref, update } from 'firebase/database';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import { getDatabase, onValue, ref, update,connectDatabaseEmulator } from 'firebase/database';
+import { connectAuthEmulator, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, signInWithCredential } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDubBAukJO2U88l6O-mUXvT8_5F5erjYVE",
@@ -32,6 +32,22 @@ export const useDbData = (path) => {
 
   return [ data, error ];
 };
+
+if (process.env.REACT_APP_EMULATE === "true") {
+  const testFirebase = initializeApp(firebaseConfig);
+  const testDB = getDatabase(testFirebase);
+  const testAuth = getAuth(testFirebase);
+
+  connectAuthEmulator(testAuth, "http://127.0.0.1:9099");
+  connectDatabaseEmulator(testDB, "127.0.0.1", 9000);
+
+  signInWithCredential(
+    testAuth,
+    GoogleAuthProvider.credential(
+      '{"sub": "M1nKdqHLqL8mdVKO25NsOEMenYZG", "email": "test@gmail.com", "displayName":"Test User", "email_verified": true}'
+    )
+  );
+}
 
 const makeResult = (error) => {
   const timestamp = Date.now();
